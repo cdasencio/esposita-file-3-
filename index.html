@@ -82,7 +82,6 @@ body {
   cursor: pointer;
 }
 
-/* Ajuste extra para pantallas pequeñas */
 @media (max-width: 480px) {
   .container {
     margin: 25px auto;
@@ -124,7 +123,7 @@ body {
 <div class="reset" onclick="toggleTimer()"></div>
 
 <script>
-// pétalos
+// pétalos (SIN CAMBIOS)
 for (let i = 0; i < 30; i++) {
   const p = document.createElement("div");
   p.className = "petal";
@@ -134,12 +133,14 @@ for (let i = 0; i < 30; i++) {
   document.body.appendChild(p);
 }
 
-// cronómetro
-let startTime = null;
+// 🔥 SOLO ARREGLADO: persistencia del tiempo
+let startTime = localStorage.getItem("startTime");
 let interval = null;
 let running = false;
 
 function updateTimer() {
+  if (!startTime) return;
+
   const diff = Math.floor((Date.now() - startTime) / 1000);
   const d = Math.floor(diff / 86400);
   const h = Math.floor((diff % 86400) / 3600);
@@ -153,14 +154,24 @@ function updateTimer() {
 function toggleTimer() {
   if (!running) {
     startTime = Date.now();
+    localStorage.setItem("startTime", startTime);
     interval = setInterval(updateTimer, 1000);
     running = true;
   } else {
     clearInterval(interval);
+    localStorage.removeItem("startTime");
+    startTime = null;
     running = false;
+
     document.getElementById("display").innerText =
       `0 días 00 horas 00 minutos 00 segundos`;
   }
+}
+
+// auto inicio si ya existe
+if (startTime) {
+  interval = setInterval(updateTimer, 1000);
+  running = true;
 }
 </script>
 
