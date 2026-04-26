@@ -9,50 +9,56 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   background: url('fondo.jpg') no-repeat center center;
   background-size: cover;
 }
 
+/* Contenedor responsive */
 .container {
-  max-width: 750px;
-  margin: auto;
-  margin-top: 60px;
-  padding: 40px;
+  width: 90%;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 25px 18px;
   text-align: center;
   color: #222;
 
-  background: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.60);
   backdrop-filter: blur(10px);
-  border-radius: 25px;
+  border-radius: 20px;
   border: 1px solid rgba(255,255,255,0.4);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
+/* Texto adaptado a móvil */
 .container > div:first-child {
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.6;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .container b {
-  font-size: 40px;
+  font-size: 26px;
   font-weight: 700;
   color: #b02a5b;
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
+/* Timer más legible en celular */
 .time {
-  font-size: 30px;
-  margin-top: 25px;
+  font-size: 20px;
+  margin-top: 18px;
   font-weight: 700;
   color: #b02a5b;
 }
 
+/* Pétalos */
 .petal {
   position: absolute;
-  width: 12px;
-  height: 18px;
+  width: 10px;
+  height: 16px;
   background: radial-gradient(circle, #ff8fa3, #ff4d6d);
   border-radius: 50%;
   opacity: 0.8;
@@ -60,19 +66,40 @@ body {
 }
 
 @keyframes fall {
-  0% { transform: translateY(-100px); opacity: 0; }
+  0% { transform: translateY(-10vh); opacity: 0; }
   20% { opacity: 1; }
   100% { transform: translateY(110vh); opacity: 0; }
 }
 
+/* Botón invisible */
 .reset {
   position: fixed;
-  bottom: 10px;
-  right: 10px;
-  width: 60px;
-  height: 60px;
+  bottom: 15px;
+  right: 15px;
+  width: 50px;
+  height: 50px;
   opacity: 0;
   cursor: pointer;
+}
+
+/* Ajuste extra para pantallas pequeñas */
+@media (max-width: 480px) {
+  .container {
+    margin: 25px auto;
+    padding: 20px 15px;
+  }
+
+  .container > div:first-child {
+    font-size: 15px;
+  }
+
+  .container b {
+    font-size: 22px;
+  }
+
+  .time {
+    font-size: 18px;
+  }
 }
 </style>
 </head>
@@ -89,19 +116,21 @@ body {
     Esta bonita historia de amor comenzó:
   </div>
 
-  <div class="time" id="display">0 días 00 horas 00 minutos 00 segundos</div>
+  <div class="time" id="display">
+    0 días 00 horas 00 minutos 00 segundos
+  </div>
 </div>
 
 <div class="reset" onclick="toggleTimer()"></div>
 
 <script>
 // pétalos
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < 30; i++) {
   const p = document.createElement("div");
   p.className = "petal";
-  p.style.left = Math.random()*100 + "%";
-  p.style.animationDuration = (6 + Math.random()*6) + "s";
-  p.style.animationDelay = Math.random()*5 + "s";
+  p.style.left = Math.random() * 100 + "%";
+  p.style.animationDuration = (6 + Math.random() * 5) + "s";
+  p.style.animationDelay = Math.random() * 5 + "s";
   document.body.appendChild(p);
 }
 
@@ -123,12 +152,10 @@ function updateTimer() {
 
 function toggleTimer() {
   if (!running) {
-    // iniciar
     startTime = Date.now();
     interval = setInterval(updateTimer, 1000);
     running = true;
   } else {
-    // detener y resetear a 0
     clearInterval(interval);
     running = false;
     document.getElementById("display").innerText =
