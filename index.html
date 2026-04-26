@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Historia de Amor</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  background: url('fondo.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.container {
+  max-width: 750px;
+  margin: auto;
+  margin-top: 60px;
+  padding: 40px;
+  text-align: center;
+  color: #222;
+
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.container > div:first-child {
+  font-size: 20px;
+  line-height: 1.6;
+  font-weight: 600;
+}
+
+.container b {
+  font-size: 40px;
+  font-weight: 700;
+  color: #b02a5b;
+}
+
+.time {
+  font-size: 30px;
+  margin-top: 25px;
+  font-weight: 700;
+  color: #b02a5b;
+}
+
+.petal {
+  position: absolute;
+  width: 12px;
+  height: 18px;
+  background: radial-gradient(circle, #ff8fa3, #ff4d6d);
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-100px); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+
+.reset {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 60px;
+  height: 60px;
+  opacity: 0;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div>
+    <b>Tulipanes para el amor de mi vida:</b><br><br>
+    Si pudiera elegir un lugar seguro, sería a tu lado.<br><br>
+    Time is great with you my girl.<br><br>
+    Cuanto más tiempo estoy contigo más te amo.<br><br>
+    <b>¡Te amo!</b><br><br>
+    Esta bonita historia de amor comenzó:
+  </div>
+
+  <div class="time" id="display">0 días 00 horas 00 minutos 00 segundos</div>
+</div>
+
+<div class="reset" onclick="toggleTimer()"></div>
+
+<script>
+// pétalos
+for (let i = 0; i < 40; i++) {
+  const p = document.createElement("div");
+  p.className = "petal";
+  p.style.left = Math.random()*100 + "%";
+  p.style.animationDuration = (6 + Math.random()*6) + "s";
+  p.style.animationDelay = Math.random()*5 + "s";
+  document.body.appendChild(p);
+}
+
+// cronómetro
+let startTime = null;
+let interval = null;
+let running = false;
+
+function updateTimer() {
+  const diff = Math.floor((Date.now() - startTime) / 1000);
+  const d = Math.floor(diff / 86400);
+  const h = Math.floor((diff % 86400) / 3600);
+  const m = Math.floor((diff % 3600) / 60);
+  const s = diff % 60;
+
+  document.getElementById("display").innerText =
+    `${d} días ${String(h).padStart(2,'0')} horas ${String(m).padStart(2,'0')} minutos ${String(s).padStart(2,'0')} segundos`;
+}
+
+function toggleTimer() {
+  if (!running) {
+    // iniciar
+    startTime = Date.now();
+    interval = setInterval(updateTimer, 1000);
+    running = true;
+  } else {
+    // detener y resetear a 0
+    clearInterval(interval);
+    running = false;
+    document.getElementById("display").innerText =
+      `0 días 00 horas 00 minutos 00 segundos`;
+  }
+}
+</script>
+
+</body>
+</html>
